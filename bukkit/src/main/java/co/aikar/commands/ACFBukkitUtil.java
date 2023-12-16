@@ -269,10 +269,13 @@ public class ACFBukkitUtil {
             return null;
         }
         String name = ACFUtil.replace(search, ":confirm", "");
+        if (!issuer.getManager().isValidName(name)) {
+            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+            return null;
+        }
         List<Player> matches = Bukkit.getServer().matchPlayer(name);
         List<Player> confirmList = new ArrayList<>();
         findMatches(search, requester, matches, confirmList);
-
 
         if (matches.size() > 1 || confirmList.size() > 1) {
             String allMatches = matches.stream().map(Player::getName).collect(Collectors.joining(", "));
